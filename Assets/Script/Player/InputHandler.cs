@@ -28,7 +28,7 @@ public class InputHandler : MonoBehaviour
         moveAction.canceled += context => movementInput = Vector2.zero;
 
         InputAction jumpAction = playerActionMap.FindAction("Jump");
-        jumpAction.started += context => OnJump?.Invoke(); // Jump 호출 시 이벤트 발생
+        jumpAction.started += context => OnJump?.Invoke();
 
         InputAction lookAction = playerActionMap.FindAction("Mouse");
         lookAction.performed += context => mouseDelta = context.ReadValue<Vector2>();

@@ -7,12 +7,14 @@ public class UIStat : MonoBehaviour
 {
     [SerializeField] Image healthBar;
 
-    private void Start()
+    public PlayerStat stat;
+
+    public void Init()
     {
-        GameManager.Instance.uiStat = this;
+        stat.OnStatChanged += UpdateUI;
     }
 
-    public void UpdateUI(float amount)
+    void UpdateUI(float amount)
     {
         healthBar.fillAmount = amount;
     }

@@ -575,6 +575,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 80
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,6 +720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 1806823961}
+  stat: {fileID: 0}
 --- !u!1 &1130500668
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,6 +1486,7 @@ GameObject:
   - component: {fileID: 5866666020171898689}
   - component: {fileID: 5866666020171898688}
   - component: {fileID: 5866666020171898693}
+  - component: {fileID: 5866666020171898695}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2820,6 +2825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4703133f118982546b83a4d301e3d644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stat: {fileID: 0}
+  camera: {fileID: 0}
   lookSentitivity: 0.1
 --- !u!54 &5866666020171898691
 Rigidbody:
@@ -2898,7 +2905,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   interactRange: 3
-  camera: {fileID: 963194227}
 --- !u!136 &5866666020171898694
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2922,6 +2928,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &5866666020171898695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132147678109695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29dd211af0e44c64d914641da5d1006e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5877004155360417293
 GameObject:
   m_ObjectHideFlags: 0

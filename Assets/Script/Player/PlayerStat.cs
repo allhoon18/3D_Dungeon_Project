@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,10 +19,10 @@ public class PlayerStat : MonoBehaviour
 
     private float maxHealth;
 
-    // Start is called before the first frame update
-    void Start()
+    public Action<float> OnStatChanged;
+
+    public void Init()
     {
-        GameManager.Instance.stat = this;
         maxHealth = health;
     }
 
@@ -34,8 +35,9 @@ public class PlayerStat : MonoBehaviour
                     health = Mathf.Min(health + value, maxHealth);
                 else
                     health = Mathf.Max(0, health + value);
-                
-                GameManager.Instance.uiStat.UpdateUI(health/maxHealth);
+
+                OnStatChanged?.Invoke(health / maxHealth);
+
                 break;
             case StatType.Speed:
                 speed += value;

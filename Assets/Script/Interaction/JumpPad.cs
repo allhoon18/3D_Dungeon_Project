@@ -9,15 +9,14 @@ public class JumpPad : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if ((playerLayer & (1 << collision.gameObject.layer)) != 0)
-        //    return;
-
         PlayerController playerController;
 
         if(collision.gameObject.TryGetComponent(out playerController))
         {
             Debug.Log("JumpPad Active");
             playerController.Jump(power);
+            //UI 작동 테스트
+            GameManager.Instance.stat.AddOrSubtract(StatType.Health, -10f);
         }
     }
 }

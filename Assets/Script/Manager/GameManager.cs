@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = new GameObject("CharacterManager").AddComponent<GameManager>();
+                _instance = new GameObject("GameManager").AddComponent<GameManager>();
             }
 
             return _instance;
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     public PlayerController controller;
     public PlayerStat stat;
     public UIStat uiStat;
+    public Interaction interaction;
 
     private void Awake()
     {
@@ -36,13 +37,27 @@ public class GameManager : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-
-        
     }
 
     private void Start()
     {
+        Initialize();
+    }
+
+    void Initialize()
+    {
+        stat = FindObjectOfType<PlayerStat>().GetComponent<PlayerStat> ();
+        controller = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
+        uiStat = FindObjectOfType<UIStat>().GetComponent<UIStat>(); ;
+        interaction = FindObjectOfType<Interaction>().GetComponent<Interaction>();
+
+        interaction.camera = controller.camera;
+
         controller.stat = stat;
+        uiStat.stat = stat;
+
+        stat.Init();
+        uiStat.Init();
     }
 
 }

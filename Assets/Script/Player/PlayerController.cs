@@ -15,11 +15,8 @@ public class PlayerController : MonoBehaviour
 
     InputHandler inputHandler;
 
-    // Start is called before the first frame update
     void Start()
     {
-        GameManager.Instance.controller = this;
-
         rigidbody = GetComponent<Rigidbody>();
         camera = Camera.main;
 
@@ -53,15 +50,9 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump()
     {
-        if(stat != null)
-        {
-            Jump(stat.jumpPower);
-        }
-        else
-        {
-            Debug.LogWarning("PlayerStat is missing");
-            return;
-        }
+        if (stat == null) return;
+        
+        Jump(stat.jumpPower);
     }
 
     public void Jump(float power)
