@@ -16,10 +16,13 @@ public class PlayerStat : MonoBehaviour
     public float speed;
     public float jumpPower;
 
+    private float maxHealth;
+
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.stat = this;
+        maxHealth = health;
     }
 
     public void AddOrSubtract(StatType type, float value)
@@ -27,7 +30,12 @@ public class PlayerStat : MonoBehaviour
         switch(type)
         {
             case StatType.Health:
-                health += value;
+                if (value > 0)
+                    health = Mathf.Min(health + value, maxHealth);
+                else
+                    health = Mathf.Max(0, health + value);
+                
+                GameManager.Instance.uiStat.UpdateUI(health/maxHealth);
                 break;
             case StatType.Speed:
                 speed += value;
