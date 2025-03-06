@@ -11,8 +11,16 @@ public class PlayerController : MonoBehaviour
     private InputActionMap playerActionMap;
     private InputAction moveAction;
     private InputAction jumpAction;
+    private InputAction lookAction;
     private InputAction.CallbackContext context;
-    Vector3 movementInput;
+    private Vector3 movementInput;
+    
+    private Camera camera;
+    private Vector2 mouseDelta;
+    private Vector2 prevMouseDelta;
+
+    [SerializeField] float lookSentitivity;
+
 
     // Start is called before the first frame update
     void Start()
@@ -21,12 +29,20 @@ public class PlayerController : MonoBehaviour
 
         stat = GetComponent<PlayerStat>();
         rigidbody = GetComponent<Rigidbody>();
+        camera = Camera.main;
         InitInput();
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void FixedUpdate()
     {
         Move();
+    }
+
+    private void LateUpdate()
+    {
+        CameraLook();
     }
 
     void InitInput()
@@ -36,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
         InitMove();
         InitJump();
+        InitLook();
         
     }
 
@@ -45,18 +62,19 @@ public class PlayerController : MonoBehaviour
 
         moveAction.performed += context =>
         {
-            Vector2 dir = context.ReadValue<Vector2>();
-            Vector3 moveDir = new Vector3(dir.x, 0, dir.y);
+            Vector2 moveDir = context.ReadValue<Vector2>();
             movementInput = moveDir;
         };
 
         moveAction.canceled += context =>
         {
-            movementInput = Vector3.zero;
-            Vector3 currentVelocity = rigidbody.velocity;
-            Debug.Log(currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
-            Vector3 newVelocity = Vector3.SmoothDamp(rigidbody.velocity, Vector3.zero, ref currentVelocity, currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
-            rigidbody.velocity = newVelocity;
+            //movementInput = Vector3.zero;
+            //Vector3 currentVelocity = rigidbody.velocity;
+            //Debug.Log(currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
+            //Vector3 newVelocity = Vector3.SmoothDamp(rigidbody.velocity, Vector3.zero, ref currentVelocity, currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
+            //rigidbody.velocity = newVelocity;
+
+            rigidbody.velocity = Vector3.zero;
         };
     }
 
@@ -70,9 +88,21 @@ public class PlayerController : MonoBehaviour
         };
     }
 
+    void InitLook()
+    {
+        lookAction = playerActionMap.FindAction("Mouse");
+
+        lookAction.performed  += context =>
+        {
+            mouseDelta = context.ReadValue<Vector2>();
+
+        };
+
+    }
+
     void Move()
     {
-        Vector3 dir = movementInput.normalized;
+        Vector3 dir = transform.forward * movementInput.y + transform.right * movementInput.x;
         dir *= stat.speed;
         dir.y = rigidbody.velocity.y;
 
@@ -82,6 +112,16 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         rigidbody.AddForce(Vector3.up * stat.jumpPower, ForceMode.Impulse);
+    }
+
+    void CameraLook()
+    {
+        if(mouseDelta != prevMouseDelta)
+        {
+            transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSentitivity, 0);
+            camera.transform.eulerAngles += new Vector3(mouseDelta.y * lookSentitivity * -1, 0, 0);
+            prevMouseDelta = mouseDelta;
+        }
     }
 
 
