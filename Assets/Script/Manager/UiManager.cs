@@ -51,7 +51,7 @@ public class UiManager : MonoBehaviour
         IInteractable[] interactableObjs = FindObjectsOfType<MonoBehaviour>().OfType<IInteractable>().ToArray();
         foreach (var interactable in interactableObjs)
         {
-            interactable.OnItemInteracted += ShowOverlayUI;
+            interactable.OnInteracted += ShowOverlayUI;
         }
     }
 

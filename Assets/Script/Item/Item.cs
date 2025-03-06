@@ -6,10 +6,10 @@ using UnityEngine;
 public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] ItemData data;
-    public string Name { get { return data.name;  } }
+    public string Name { get { return data.Name;  } }
     public string Description { get { return data.Description; } }
 
-    public event Action<GameObject> OnItemInteracted;
+    public event Action<GameObject> OnInteracted;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -23,7 +23,7 @@ public class Item : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        OnItemInteracted?.Invoke(this.gameObject);
+        OnInteracted?.Invoke(this.gameObject);
     }
 
 }

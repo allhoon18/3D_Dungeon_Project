@@ -8,7 +8,7 @@ public interface IInteractable
     public string Name { get; }
     public string Description { get; }
 
-    public event Action<GameObject> OnItemInteracted;
+    public event Action<GameObject> OnInteracted;
 
     void Interact();
 }

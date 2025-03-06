@@ -10,7 +10,7 @@ public class JumpPad : MonoBehaviour, IInteractable
     public string Name { get { return "JumpPad"; } }
     public string Description { get { return "Let's Jump High"; } }
     
-    public event Action<GameObject> OnItemInteracted;
+    public event Action<GameObject> OnInteracted;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -27,6 +27,6 @@ public class JumpPad : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        OnItemInteracted?.Invoke(this.gameObject);
+        OnInteracted?.Invoke(this.gameObject);
     }
 }
