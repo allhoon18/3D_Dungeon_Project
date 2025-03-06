@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public PlayerController controller;
     public PlayerStat stat;
+    public UIStat uiStat;
 
     private void Awake()
     {
@@ -35,5 +36,13 @@ public class GameManager : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
+        
     }
+
+    private void Start()
+    {
+        controller.stat = stat;
+    }
+
 }

@@ -6,33 +6,49 @@ public class Interaction : MonoBehaviour
 {
     [SerializeField] LayerMask targetLayer;
     [SerializeField] float interactRange;
-    [SerializeField] Camera camera;
 
-    GameObject curInteraction;
+    GameManager gameManager;
+
+    GameObject _curInteraction;
+
+    Camera _camera;
+
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+        _camera = gameManager.controller.camera;
+    }
 
     private void Update()
     {
-        Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        CheckObject();
+    }
+
+    void CheckObject()
+    {
+        Ray ray = _camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, interactRange, targetLayer))
         {
-            if (hit.collider.gameObject != curInteraction)
+            if (hit.collider.gameObject != _curInteraction)
             {
                 Debug.Log("Check");
-                curInteraction = hit.collider.gameObject;
+                _curInteraction = hit.collider.gameObject;
             }
         }
         else
         {
-            curInteraction = null;
+            _curInteraction = null;
         }
     }
 
     private void OnDrawGizmos()
     {
+        if (_camera == null) return;
+
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(camera.transform.position, camera.transform.position + camera.transform.forward * interactRange);
+        Gizmos.DrawLine(_camera.transform.position, _camera.transform.position + _camera.transform.forward * interactRange);
     }
 
 }

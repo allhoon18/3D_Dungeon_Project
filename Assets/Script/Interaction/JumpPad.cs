@@ -16,5 +16,6 @@ public class JumpPad : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         gameManager.controller.Jump(power);
+        gameManager.stat.AddOrSubtract(StatType.Health, -10);
     }
 }

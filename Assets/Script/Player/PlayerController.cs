@@ -5,34 +5,27 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerStat stat;
+    [HideInInspector] public PlayerStat stat;
     private Rigidbody rigidbody;
-    private PlayerInput input;
-    private InputActionMap playerActionMap;
-    private InputAction moveAction;
-    private InputAction jumpAction;
-    private InputAction lookAction;
-    private InputAction.CallbackContext context;
-    private Vector3 movementInput;
 
-    private Camera camera;
-    private Vector2 mouseDelta;
+    public Camera camera;
     private Vector2 prevMouseDelta;
 
     [SerializeField] float lookSentitivity;
 
-    private Vector3 currentVelocity;
-
+    InputHandler inputHandler;
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.Instance.controller = this;
 
-        stat = GetComponent<PlayerStat>();
         rigidbody = GetComponent<Rigidbody>();
         camera = Camera.main;
-        InitInput();
+
+        inputHandler = GetComponent<InputHandler>();
+
+        inputHandler.OnJump += OnJump; // Jump 이벤트에 메서드 연결
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -47,61 +40,28 @@ public class PlayerController : MonoBehaviour
         CameraLook();
     }
 
-    void InitInput()
-    {
-        input = GetComponent<PlayerInput>();
-        playerActionMap = input.actions.FindActionMap("Player");
-
-        InitMove();
-        InitJump();
-        InitLook();
-
-    }
-
-    void InitMove()
-    {
-        moveAction = playerActionMap.FindAction("Move");
-
-        moveAction.performed += context =>
-        {
-            movementInput = context.ReadValue<Vector2>();
-        };
-
-        moveAction.canceled += context =>
-        {
-            movementInput = Vector3.zero;
-        };
-    }
-
-    void InitJump()
-    {
-        jumpAction = playerActionMap.FindAction("Jump");
-
-        jumpAction.started += context =>
-        {
-            Jump(stat.jumpPower);
-        };
-    }
-
-    void InitLook()
-    {
-        lookAction = playerActionMap.FindAction("Mouse");
-
-        lookAction.performed += context =>
-        {
-            mouseDelta = context.ReadValue<Vector2>();
-
-        };
-
-    }
-
     void Move()
     {
-        Vector3 dir = transform.forward * movementInput.y + transform.right * movementInput.x;
+        if (stat == null) return;
+
+        Vector3 dir = transform.forward * inputHandler.movementInput.y + transform.right * inputHandler.movementInput.x;
         dir *= stat.speed;
         dir.y = rigidbody.velocity.y;
 
         rigidbody.AddForce(dir, ForceMode.Acceleration);
+    }
+
+    public void OnJump()
+    {
+        if(stat != null)
+        {
+            Jump(stat.jumpPower);
+        }
+        else
+        {
+            Debug.LogWarning("PlayerStat is missing");
+            return;
+        }
     }
 
     public void Jump(float power)
@@ -111,11 +71,11 @@ public class PlayerController : MonoBehaviour
 
     void CameraLook()
     {
-        if (mouseDelta != prevMouseDelta)
+        if (inputHandler.mouseDelta != prevMouseDelta)
         {
-            transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSentitivity, 0);
-            camera.transform.eulerAngles += new Vector3(mouseDelta.y * lookSentitivity * -1, 0, 0);
-            prevMouseDelta = mouseDelta;
+            transform.eulerAngles += new Vector3(0, inputHandler.mouseDelta.x * lookSentitivity, 0);
+            camera.transform.eulerAngles += new Vector3(inputHandler.mouseDelta.y * lookSentitivity * -1, 0, 0);
+            prevMouseDelta = inputHandler.mouseDelta;
         }
     }
 
