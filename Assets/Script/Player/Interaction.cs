@@ -30,13 +30,24 @@ public class Interaction : MonoBehaviour
         {
             if (hit.collider.gameObject != _curInteraction)
             {
-                Debug.Log("Check");
                 _curInteraction = hit.collider.gameObject;
+
+                ItemInteract(hit.collider.gameObject);
             }
         }
         else
         {
             _curInteraction = null;
+        }
+    }
+
+    void ItemInteract(GameObject hitObject)
+    {
+        IInteractable interactableObj;
+
+        if(hitObject.TryGetComponent(out interactableObj))
+        {
+            interactableObj.Interact();
         }
     }
 

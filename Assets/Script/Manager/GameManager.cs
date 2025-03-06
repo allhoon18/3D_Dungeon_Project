@@ -22,12 +22,14 @@ public class GameManager : MonoBehaviour
     public PlayerStat stat;
     public UIStat uiStat;
     public Interaction interaction;
+    public UiManager uiManager;
 
     private void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
+            _instance = new GameObject("GameManager").AddComponent<GameManager>();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+
     }
 
     private void Start()
@@ -58,6 +61,8 @@ public class GameManager : MonoBehaviour
 
         stat.Init();
         uiStat.Init();
+
+        uiManager = UiManager.Instance;
     }
 
 }
