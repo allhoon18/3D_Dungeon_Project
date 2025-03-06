@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class JumpPad : MonoBehaviour
 {
-    GameManager gameManager;
-
     [SerializeField] float power;
-
-    private void Start()
-    {
-        gameManager = GameManager.Instance;
-    }
+    [SerializeField] LayerMask playerLayer;
 
     private void OnCollisionEnter(Collision collision)
     {
-        gameManager.controller.Jump(power);
-        gameManager.stat.AddOrSubtract(StatType.Health, -10);
+        //if ((playerLayer & (1 << collision.gameObject.layer)) != 0)
+        //    return;
+
+        PlayerController playerController;
+
+        if(collision.gameObject.TryGetComponent(out playerController))
+        {
+            Debug.Log("JumpPad Active");
+            playerController.Jump(power);
+        }
     }
 }
