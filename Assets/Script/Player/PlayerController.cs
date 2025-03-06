@@ -10,12 +10,15 @@ public class PlayerController : MonoBehaviour
     private PlayerInput input;
     private InputActionMap playerActionMap;
     private InputAction moveAction;
+    private InputAction jumpAction;
     private InputAction.CallbackContext context;
     Vector3 movementInput;
 
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.Instance.controller = this;
+
         stat = GetComponent<PlayerStat>();
         rigidbody = GetComponent<Rigidbody>();
         InitInput();
@@ -31,6 +34,13 @@ public class PlayerController : MonoBehaviour
         input = GetComponent<PlayerInput>();
         playerActionMap = input.actions.FindActionMap("Player");
 
+        InitMove();
+        InitJump();
+        
+    }
+
+    void InitMove()
+    {
         moveAction = playerActionMap.FindAction("Move");
 
         moveAction.performed += context =>
@@ -50,6 +60,16 @@ public class PlayerController : MonoBehaviour
         };
     }
 
+    void InitJump()
+    {
+        jumpAction = playerActionMap.FindAction("Jump");
+
+        jumpAction.started += context =>
+        {
+            Jump();
+        };
+    }
+
     void Move()
     {
         Vector3 dir = movementInput.normalized;
@@ -58,5 +78,11 @@ public class PlayerController : MonoBehaviour
 
         rigidbody.AddForce(dir, ForceMode.Acceleration);
     }
+
+    void Jump()
+    {
+        rigidbody.AddForce(Vector3.up * stat.jumpPower, ForceMode.Impulse);
+    }
+
 
 }
