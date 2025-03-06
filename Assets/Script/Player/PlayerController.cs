@@ -14,12 +14,14 @@ public class PlayerController : MonoBehaviour
     private InputAction lookAction;
     private InputAction.CallbackContext context;
     private Vector3 movementInput;
-    
+
     private Camera camera;
     private Vector2 mouseDelta;
     private Vector2 prevMouseDelta;
 
     [SerializeField] float lookSentitivity;
+
+    private Vector3 currentVelocity;
 
 
     // Start is called before the first frame update
@@ -53,7 +55,7 @@ public class PlayerController : MonoBehaviour
         InitMove();
         InitJump();
         InitLook();
-        
+
     }
 
     void InitMove()
@@ -67,14 +69,7 @@ public class PlayerController : MonoBehaviour
 
         moveAction.canceled += context =>
         {
-            //movementInput = Vector3.zero;
-            //Vector3 currentVelocity = rigidbody.velocity;
-            //Debug.Log(currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
-            //Vector3 newVelocity = Vector3.SmoothDamp(rigidbody.velocity, Vector3.zero, ref currentVelocity, currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
-            //rigidbody.velocity = newVelocity;
-
             movementInput = Vector3.zero;
-            rigidbody.velocity = Vector3.zero;
         };
     }
 
@@ -84,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
         jumpAction.started += context =>
         {
-            Jump();
+            Jump(stat.jumpPower);
         };
     }
 
@@ -92,7 +87,7 @@ public class PlayerController : MonoBehaviour
     {
         lookAction = playerActionMap.FindAction("Mouse");
 
-        lookAction.performed  += context =>
+        lookAction.performed += context =>
         {
             mouseDelta = context.ReadValue<Vector2>();
 
@@ -109,14 +104,14 @@ public class PlayerController : MonoBehaviour
         rigidbody.AddForce(dir, ForceMode.Acceleration);
     }
 
-    void Jump()
+    public void Jump(float power)
     {
-        rigidbody.AddForce(Vector3.up * stat.jumpPower, ForceMode.Impulse);
+        rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
     }
 
     void CameraLook()
     {
-        if(mouseDelta != prevMouseDelta)
+        if (mouseDelta != prevMouseDelta)
         {
             transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSentitivity, 0);
             camera.transform.eulerAngles += new Vector3(mouseDelta.y * lookSentitivity * -1, 0, 0);
