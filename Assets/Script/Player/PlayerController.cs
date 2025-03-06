@@ -62,8 +62,7 @@ public class PlayerController : MonoBehaviour
 
         moveAction.performed += context =>
         {
-            Vector2 moveDir = context.ReadValue<Vector2>();
-            movementInput = moveDir;
+            movementInput = context.ReadValue<Vector2>();
         };
 
         moveAction.canceled += context =>
@@ -74,6 +73,7 @@ public class PlayerController : MonoBehaviour
             //Vector3 newVelocity = Vector3.SmoothDamp(rigidbody.velocity, Vector3.zero, ref currentVelocity, currentVelocity.magnitude * 0.01f.RoundToDecimalPlaces(2));
             //rigidbody.velocity = newVelocity;
 
+            movementInput = Vector3.zero;
             rigidbody.velocity = Vector3.zero;
         };
     }

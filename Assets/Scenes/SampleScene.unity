@@ -2499,6 +2499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4703133f118982546b83a4d301e3d644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lookSentitivity: 0.1
 --- !u!136 &5866666020171898690
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2599,6 +2600,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   interactRange: 3
+  camera: {fileID: 963194227}
 --- !u!1 &5877004155360417293
 GameObject:
   m_ObjectHideFlags: 0
