@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public PlayerStat stat;
     public UIStat uiStat;
     public Interaction interaction;
-    public UiManager uiManager;
+    public UIManager uiManager;
 
     private void Awake()
     {
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
         stat.Init();
         uiStat.Init();
 
-        uiManager = UiManager.Instance;
+        uiManager = UIManager.Instance;
     }
 
 }
