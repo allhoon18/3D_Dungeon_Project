@@ -6,9 +6,16 @@ using UnityEngine;
 public class JumpPad : MonoBehaviour, IInteractable
 {
     [SerializeField] float power;
+    [SerializeField] InteractableData data;
 
-    public string Name { get { return "JumpPad"; } }
-    public string Description { get { return "Let's Jump High"; } }
+    public InteractableData interactableData
+    {
+        get => data;
+        set => value = data;
+    }
+
+    public string Name { get { return interactableData.Name; } }
+    public string Description { get { return interactableData.Description; } }
     
     public event Action<GameObject> OnItemInteracted;
 

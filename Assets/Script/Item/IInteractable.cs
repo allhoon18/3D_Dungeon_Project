@@ -5,6 +5,8 @@ using UnityEngine;
 
 public interface IInteractable
 {
+    InteractableData interactableData { get; set; }
+
     public string Name { get; }
     public string Description { get; }
 
