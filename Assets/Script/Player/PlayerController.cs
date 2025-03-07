@@ -35,9 +35,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //Rigidbody, Camera วาด็
+        //Rigidbody
         rigidbody = GetComponent<Rigidbody>();
-        camera = Camera.main;
 
         inputHandler = GetComponent<InputHandler>();
 
@@ -50,17 +49,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
-        //if(previsGround != isGroud)
-        //{
-        //    if(isGroud)
-        //        animationHandler.ActiveAnimation(AnimationStatus.Land);
-        //    else
-        //        animationHandler.ActiveAnimation(AnimationStatus.Fall);
-
-        //    previsGround = isGroud;
-        //}
-
         if (isJumping) return;
 
         if (!isGroud)

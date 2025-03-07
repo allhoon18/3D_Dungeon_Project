@@ -65,7 +65,9 @@ public class GameManager : MonoBehaviour
         stat.Init();
         uiStat.Init();
 
-        uiManager = UIManager.Instance;
+        GameObject uiManagerObj = new GameObject("UIManager");
+        uiManager = uiManagerObj.AddComponent<UIManager>();
+        uiManager.Initialize();
     }
 
 }
