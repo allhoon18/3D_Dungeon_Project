@@ -21,15 +21,15 @@ public class GameManager : MonoBehaviour
     public PlayerController controller;
     public PlayerStat stat;
     public UIStat uiStat;
-    public Interaction interaction;
     public UIManager uiManager;
+    public InteractionHandler interaction;
+    public Camera mainCamera;
 
     private void Awake()
     {
         if (_instance == null)
         {
             _instance = this;
-            _instance = new GameObject("GameManager").AddComponent<GameManager>();
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -52,9 +52,12 @@ public class GameManager : MonoBehaviour
         stat = FindObjectOfType<PlayerStat>().GetComponent<PlayerStat> ();
         controller = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
         uiStat = FindObjectOfType<UIStat>().GetComponent<UIStat>(); ;
-        interaction = FindObjectOfType<Interaction>().GetComponent<Interaction>();
+        interaction = FindObjectOfType<InteractionHandler>().GetComponent<InteractionHandler>();
 
-        interaction.camera = controller.camera;
+        mainCamera = Camera.main;
+
+        interaction.camera = mainCamera;
+        controller.camera = mainCamera;
 
         controller.stat = stat;
         uiStat.stat = stat;
@@ -62,7 +65,9 @@ public class GameManager : MonoBehaviour
         stat.Init();
         uiStat.Init();
 
-        uiManager = UIManager.Instance;
+        GameObject uiManagerObj = new GameObject("UIManager");
+        uiManager = uiManagerObj.AddComponent<UIManager>();
+        uiManager.Initialize();
     }
 
 }

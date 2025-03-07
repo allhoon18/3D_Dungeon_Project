@@ -4,11 +4,10 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
 
-public class ItemData : ScriptableObject
+public class ItemData : InteractableData
 {
     [Header("Item")]
-    public string Name;
-    public string Description;
     public StatType type;
-    public int value;
+    public float value;
+    public float duration;
 }

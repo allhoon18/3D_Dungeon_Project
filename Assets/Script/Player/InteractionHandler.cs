@@ -2,19 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interaction : MonoBehaviour
+public class InteractionHandler : MonoBehaviour
 {
     [SerializeField] LayerMask targetLayer;
     [SerializeField] float interactRange;
 
     GameObject _curInteraction;
 
-    [HideInInspector] public Camera camera;
-
-    private void Start()
-    {
-        GameManager.Instance.interaction = this;
-    }
+    public Camera camera;
 
     private void Update()
     {
@@ -37,6 +32,8 @@ public class Interaction : MonoBehaviour
         }
         else
         {
+            if(_curInteraction != null)
+                EndItemInteact(_curInteraction);
             _curInteraction = null;
         }
     }
@@ -48,6 +45,16 @@ public class Interaction : MonoBehaviour
         if(hitObject.TryGetComponent(out interactableObj))
         {
             interactableObj.Interact();
+        }
+    }
+
+    void EndItemInteact(GameObject hitObject)
+    {
+        IInteractable interactableObj;
+
+        if (hitObject.TryGetComponent(out interactableObj))
+        {
+            interactableObj.EndInteraction();
         }
     }
 

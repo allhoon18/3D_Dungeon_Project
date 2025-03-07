@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: HealOrb
   m_EditorClassIdentifier: 
   Name: HealOrb
-  Description: Rescore Health
+  Description: Restore Health
+  type: 0
   value: 10

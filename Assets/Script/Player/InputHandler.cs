@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
     private InputActionMap playerActionMap;
     public Vector2 movementInput { get; private set; }
     public Vector2 mouseDelta { get; private set; }
+    public bool isRun { get; private set; }
 
     public event Action OnJump;
 
@@ -32,5 +33,9 @@ public class InputHandler : MonoBehaviour
 
         InputAction lookAction = playerActionMap.FindAction("Mouse");
         lookAction.performed += context => mouseDelta = context.ReadValue<Vector2>();
+
+        InputAction runAction = playerActionMap.FindAction("Run");
+        runAction.performed += context => isRun = true;
+        runAction.canceled += context => isRun = false;
     }
 }

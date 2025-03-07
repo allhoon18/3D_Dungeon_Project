@@ -4,60 +4,78 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    static private UIManager _instance;
-    static public UIManager Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                // 기존의 GameObject에서 UiManager를 찾습니다.
-                _instance = FindObjectOfType<UIManager>();
+    //static private UIManager _instance;
+    //static public UIManager Instance
+    //{
+    //    get
+    //    {
+    //        if (_instance == null)
+    //        {
+    //            // 기존의 GameObject에서 UiManager를 찾습니다.
+    //            _instance = FindObjectOfType<UIManager>();
 
-                // 만약 찾지 못했다면 새로 생성합니다.
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("UIManager");
-                    _instance = go.AddComponent<UIManager>();
-                }
-            }
-            return _instance;
-        }
+    //            // 만약 찾지 못했다면 새로 생성합니다.
+    //            if (_instance == null)
+    //            {
+    //                GameObject go = new GameObject("UIManager");
+    //                _instance = go.AddComponent<UIManager>();
+    //            }
+    //        }
+    //        return _instance;
+    //    }
+    //}
+
+    //private void Awake()
+    //{
+    //    if (_instance == null)
+    //    {
+    //        _instance = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    }
+    //    else
+    //    {
+    //        if (_instance != this)
+    //        {
+    //            Destroy(gameObject);
+    //        }
+    //    }
+    //}
+
+    [SerializeField] Canvas UICanvas;
+
+    public void Initialize()
+    {
+        SetCanvasUI();
+        SetInteractable();
     }
 
-    private void Awake()
+    void SetCanvasUI()
     {
-        if (_instance == null)
-        {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            if (_instance != this)
-            {
-                Destroy(gameObject);
-            }
-        }
+        GameObject canvasObj = new GameObject("UICanvas");
+        UICanvas = canvasObj.AddComponent<Canvas>();
+        UICanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        CanvasScaler canvasScaler = canvasObj.AddComponent<CanvasScaler>();
+        canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        canvasScaler.referenceResolution = new Vector2(1920, 1080);
+        canvasScaler.referencePixelsPerUnit = 100;
     }
 
-    Canvas UICanvas;
-
-    private void Start()
+    void SetInteractable()
     {
-        //한 Scene에서 여러 개일 수도 있는데
-        UICanvas = FindObjectOfType<Canvas>();
-
         // 모든 아이템에 대해 이벤트 구독
         IInteractable[] interactableObjs = FindObjectsOfType<MonoBehaviour>().OfType<IInteractable>().ToArray();
         foreach (var interactable in interactableObjs)
         {
             interactable.OnItemInteracted += ShowOverlayUI;
+            interactable.OnItemInteractionEnded += CloseOverlayUI;
         }
     }
+
+    GameObject overlayPanel;
 
     public void ShowOverlayUI(GameObject interactableObj)
     {
@@ -80,8 +98,13 @@ public class UIManager : MonoBehaviour
 
     UIOverlay ShowOverlayPrefab(GameObject prefab)
     {
-        GameObject overlayPanel = Instantiate(prefab, UICanvas.transform);
+        overlayPanel = Instantiate(prefab, UICanvas.transform);
         return overlayPanel.GetComponent<UIOverlay>();
+    }
+
+    public void CloseOverlayUI()
+    {
+        Destroy(overlayPanel);
     }
 
 }
