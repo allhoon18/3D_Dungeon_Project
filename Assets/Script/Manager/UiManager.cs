@@ -56,8 +56,11 @@ public class UIManager : MonoBehaviour
         foreach (var interactable in interactableObjs)
         {
             interactable.OnItemInteracted += ShowOverlayUI;
+            interactable.OnItemInteractionEnded += CloseOverlayUI;
         }
     }
+
+    GameObject overlayPanel;
 
     public void ShowOverlayUI(GameObject interactableObj)
     {
@@ -80,8 +83,13 @@ public class UIManager : MonoBehaviour
 
     UIOverlay ShowOverlayPrefab(GameObject prefab)
     {
-        GameObject overlayPanel = Instantiate(prefab, UICanvas.transform);
+        overlayPanel = Instantiate(prefab, UICanvas.transform);
         return overlayPanel.GetComponent<UIOverlay>();
+    }
+
+    public void CloseOverlayUI()
+    {
+        Destroy(overlayPanel);
     }
 
 }

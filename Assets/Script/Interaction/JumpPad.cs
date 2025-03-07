@@ -18,6 +18,7 @@ public class JumpPad : MonoBehaviour, IInteractable
     public string Description { get { return interactableData.Description; } }
     
     public event Action<GameObject> OnItemInteracted;
+    public event Action OnItemInteractionEnded;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -27,13 +28,16 @@ public class JumpPad : MonoBehaviour, IInteractable
         {
             Debug.Log("JumpPad Active");
             playerController.Jump(power);
-            //UI 작동 테스트
-            GameManager.Instance.stat.AddOrSubtract(StatType.Health, -10f);
         }
     }
 
     public void Interact()
     {
         OnItemInteracted?.Invoke(this.gameObject);
+    }
+
+    public void EndInteraction()
+    {
+        OnItemInteractionEnded?.Invoke();
     }
 }

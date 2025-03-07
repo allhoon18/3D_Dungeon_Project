@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Item : MonoBehaviour, IInteractable
@@ -13,10 +14,11 @@ public class Item : MonoBehaviour, IInteractable
         set => data = value as ItemData; // ItemData로 캐스팅하여 설정
     }
 
-    public string Name { get { return data.name;  } }
-    public string Description { get { return data.Description; } }
+    public string Name => data.Name;
+    public string Description => data.Description;
 
     public event Action<GameObject> OnItemInteracted;
+    public event Action OnItemInteractionEnded;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +33,11 @@ public class Item : MonoBehaviour, IInteractable
     public void Interact()
     {
         OnItemInteracted?.Invoke(this.gameObject);
+    }
+
+    public void EndInteraction()
+    {
+        OnItemInteractionEnded?.Invoke();
     }
 
 }

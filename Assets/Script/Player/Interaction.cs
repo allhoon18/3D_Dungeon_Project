@@ -37,6 +37,8 @@ public class Interaction : MonoBehaviour
         }
         else
         {
+            if(_curInteraction != null)
+                EndItemInteact(_curInteraction);
             _curInteraction = null;
         }
     }
@@ -48,6 +50,16 @@ public class Interaction : MonoBehaviour
         if(hitObject.TryGetComponent(out interactableObj))
         {
             interactableObj.Interact();
+        }
+    }
+
+    void EndItemInteact(GameObject hitObject)
+    {
+        IInteractable interactableObj;
+
+        if (hitObject.TryGetComponent(out interactableObj))
+        {
+            interactableObj.EndInteraction();
         }
     }
 
