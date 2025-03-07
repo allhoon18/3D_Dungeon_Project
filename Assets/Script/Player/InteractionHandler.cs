@@ -9,12 +9,7 @@ public class InteractionHandler : MonoBehaviour
 
     GameObject _curInteraction;
 
-    Camera camera;
-
-    private void Start()
-    {
-        camera = Camera.main;
-    }
+    public Camera camera;
 
     private void Update()
     {
