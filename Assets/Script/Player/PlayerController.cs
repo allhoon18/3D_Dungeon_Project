@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     //키 입력 처리
     InputHandler inputHandler;
     //애니메이션 작동
-    AnimationHandeler animationHandeler;
+    AnimationHandler animationHandler;
 
     [Header("Check Ground")]
     [SerializeField] LayerMask groundLayer;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
         inputHandler = GetComponent<InputHandler>();
 
-        animationHandeler = GetComponent<AnimationHandeler>();
+        animationHandler = GetComponent<AnimationHandler>();
 
         inputHandler.OnJump += OnJump; // Jump 이벤트에 메서드 연결
 
@@ -54,9 +54,9 @@ public class PlayerController : MonoBehaviour
         //if(previsGround != isGroud)
         //{
         //    if(isGroud)
-        //        animationHandeler.ActiveAnimation(AnimationStatus.Land);
+        //        animationHandler.ActiveAnimation(AnimationStatus.Land);
         //    else
-        //        animationHandeler.ActiveAnimation(AnimationStatus.Fall);
+        //        animationHandler.ActiveAnimation(AnimationStatus.Fall);
 
         //    previsGround = isGroud;
         //}
@@ -64,9 +64,9 @@ public class PlayerController : MonoBehaviour
         if (isJumping) return;
 
         if (!isGroud)
-            animationHandeler.ActiveAnimation(AnimationStatus.Fall);
+            animationHandler.ActiveAnimation(AnimationStatus.Fall);
         else
-            animationHandeler.ActiveAnimation(AnimationStatus.Land);
+            animationHandler.ActiveAnimation(AnimationStatus.Land);
     }
 
     private void FixedUpdate()
@@ -93,8 +93,8 @@ public class PlayerController : MonoBehaviour
 
         rigidbody.AddForce(dir, ForceMode.Acceleration);
 
-        animationHandeler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
-        animationHandeler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
+        animationHandler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
+        animationHandler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
     }
 
     public void OnJump()
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
 
         rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
 
-        animationHandeler.ActiveAnimation(AnimationStatus.Jump);
+        animationHandler.ActiveAnimation(AnimationStatus.Jump);
 
         isJumping = true;
 

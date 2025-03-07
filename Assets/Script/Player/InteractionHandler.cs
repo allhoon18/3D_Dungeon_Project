@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interaction : MonoBehaviour
+public class InteractionHandler : MonoBehaviour
 {
     [SerializeField] LayerMask targetLayer;
     [SerializeField] float interactRange;
 
     GameObject _curInteraction;
 
-    [HideInInspector] public Camera camera;
+    Camera camera;
 
     private void Start()
     {
-        GameManager.Instance.interaction = this;
+        camera = Camera.main;
     }
 
     private void Update()

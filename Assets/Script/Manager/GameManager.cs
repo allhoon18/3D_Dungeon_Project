@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public PlayerController controller;
     public PlayerStat stat;
     public UIStat uiStat;
-    public Interaction interaction;
+    public InteractionHandler interaction;
     public UIManager uiManager;
 
     private void Awake()
@@ -52,9 +52,6 @@ public class GameManager : MonoBehaviour
         stat = FindObjectOfType<PlayerStat>().GetComponent<PlayerStat> ();
         controller = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
         uiStat = FindObjectOfType<UIStat>().GetComponent<UIStat>(); ;
-        interaction = FindObjectOfType<Interaction>().GetComponent<Interaction>();
-
-        interaction.camera = controller.camera;
 
         controller.stat = stat;
         uiStat.stat = stat;

@@ -12,7 +12,7 @@ public enum AnimationStatus
     Land
 }
 
-public class AnimationHandeler : MonoBehaviour
+public class AnimationHandler : MonoBehaviour
 {
     Animator animator;
 
