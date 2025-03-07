@@ -28,6 +28,7 @@ public class JumpPad : MonoBehaviour, IInteractable
         {
             Debug.Log("JumpPad Active");
             playerController.Jump(power);
+            GameManager.Instance.stat.AddOrSubtractStat(StatType.Health, -10f);
         }
     }
 
