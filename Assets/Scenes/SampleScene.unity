@@ -1496,7 +1496,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: df2b4a984c6a95b469c1106ea4b6acab, type: 2}
     - target: {fileID: 63341424652707799, guid: 57ba5c8bb40c09d4d93d131311d705c7, type: 3}
       propertyPath: power
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 63341424652707799, guid: 57ba5c8bb40c09d4d93d131311d705c7, type: 3}
       propertyPath: playerLayer.m_Bits
@@ -2820,8 +2820,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  speed: 30
-  jumpPower: 5
+  walkSpeed: 50
+  runSpeed: 150
+  jumpPower: 4
 --- !u!114 &5866666020171898689
 MonoBehaviour:
   m_ObjectHideFlags: 0

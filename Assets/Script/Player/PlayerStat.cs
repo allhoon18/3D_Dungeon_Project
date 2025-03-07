@@ -14,7 +14,8 @@ public class PlayerStat : MonoBehaviour
 {
     [Header("Stat")]
     public float health;
-    public float speed;
+    public float walkSpeed;
+    public float runSpeed;
     public float jumpPower;
 
     private float maxHealth;
@@ -48,7 +49,7 @@ public class PlayerStat : MonoBehaviour
 
     void ChangeSpeed(float value)
     {
-        speed = Mathf.Max(0, speed + value);
+        walkSpeed = Mathf.Max(0, walkSpeed + value);
     }
 
     void ChangeJumpPower(float value)

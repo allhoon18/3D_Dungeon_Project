@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Object = System.Object;
 
 public enum AnimationStatus
 {
     Walk,
-    Jump
+    Jump,
+    Run
 }
 
 public class AnimationHandeler : MonoBehaviour
@@ -31,18 +31,24 @@ public class AnimationHandeler : MonoBehaviour
 
         animationHandlersWithInput = new Dictionary<AnimationStatus, Action<float>>()
         {
-            { AnimationStatus.Walk, ActiveWalkAnimation }
+            { AnimationStatus.Walk, ActiveWalkAnimation },
+            { AnimationStatus.Run, ActiveRunAnimation }
         };
     }
 
     void ActiveWalkAnimation(float speed)
     {
-        animator.SetBool("Move", speed > 0);
+        animator.SetBool("Move", speed > 0.5f);
     }
 
     void ActiveJumpAnimation()
     {
         animator.SetTrigger("Jump");
+    }
+
+    void ActiveRunAnimation(float speed)
+    {
+        animator.SetBool("Run", speed >= GameManager.Instance.stat.runSpeed);
     }
 
     public void ActiveAnimation(AnimationStatus animationStatus, float input = 0)

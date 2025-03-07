@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     AnimationHandeler animationHandeler;
 
+    float moveSpeed;
+
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -50,12 +52,16 @@ public class PlayerController : MonoBehaviour
         if (stat == null) return;
 
         Vector3 dir = transform.forward * inputHandler.movementInput.y + transform.right * inputHandler.movementInput.x;
-        dir *= stat.speed;
+
+        moveSpeed = SetSpeed();
+
+        dir *= moveSpeed;
         dir.y = rigidbody.velocity.y;
 
         rigidbody.AddForce(dir, ForceMode.Acceleration);
 
         animationHandeler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
+        animationHandeler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
     }
 
     public void OnJump()
@@ -70,6 +76,16 @@ public class PlayerController : MonoBehaviour
         rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
 
         animationHandeler.ActiveAnimation(AnimationStatus.Jump);
+    }
+
+    public float SetSpeed()
+    {
+        if (inputHandler.isRun)
+        {
+            return stat.runSpeed;
+        }  
+        else
+            return stat.walkSpeed;
     }
 
     void CameraLook()
