@@ -8,5 +8,6 @@ public class ItemData : InteractableData
 {
     [Header("Item")]
     public StatType type;
-    public int value;
+    public float value;
+    public float duration;
 }
