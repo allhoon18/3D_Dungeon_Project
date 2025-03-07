@@ -7,7 +7,9 @@ public enum AnimationStatus
 {
     Walk,
     Jump,
-    Run
+    Run,
+    Fall,
+    Land
 }
 
 public class AnimationHandeler : MonoBehaviour
@@ -26,7 +28,9 @@ public class AnimationHandeler : MonoBehaviour
 
         animationHandlersWithoutInput = new Dictionary<AnimationStatus, Action>()
         {
-            { AnimationStatus.Jump, ActiveJumpAnimation}
+            { AnimationStatus.Jump, ActiveJumpAnimation},
+            { AnimationStatus.Fall, ActiveFallAnimation},
+            { AnimationStatus.Land, ActiveLandAnimation}
         };
 
         animationHandlersWithInput = new Dictionary<AnimationStatus, Action<float>>()
@@ -49,6 +53,16 @@ public class AnimationHandeler : MonoBehaviour
     void ActiveRunAnimation(float speed)
     {
         animator.SetBool("Run", speed >= GameManager.Instance.stat.runSpeed);
+    }
+
+    void ActiveFallAnimation()
+    {
+        animator.SetBool("Fall", true);
+    }
+
+    void ActiveLandAnimation()
+    {
+        animator.SetBool("Fall", false);
     }
 
     public void ActiveAnimation(AnimationStatus animationStatus, float input = 0)

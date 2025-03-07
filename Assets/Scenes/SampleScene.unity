@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 595782825}
   - component: {fileID: 595782824}
   - component: {fileID: 595782823}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1496,7 +1496,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: df2b4a984c6a95b469c1106ea4b6acab, type: 2}
     - target: {fileID: 63341424652707799, guid: 57ba5c8bb40c09d4d93d131311d705c7, type: 3}
       propertyPath: power
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 63341424652707799, guid: 57ba5c8bb40c09d4d93d131311d705c7, type: 3}
       propertyPath: playerLayer.m_Bits
@@ -2840,6 +2840,13 @@ MonoBehaviour:
   lookSentitivity: 0.1
   maxRotVertical: 70
   minRotVertical: -70
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 320
+  distanceToGround: 0.3
+  isGroud: 0
+  isJumping: 0
+  jumpDuration: 1.5
 --- !u!114 &5866666020171898692
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -50,6 +50,7 @@ public class PlayerStat : MonoBehaviour
     void ChangeSpeed(float value)
     {
         walkSpeed = Mathf.Max(0, walkSpeed + value);
+        runSpeed = Mathf.Max(0, walkSpeed + value);
     }
 
     void ChangeJumpPower(float value)

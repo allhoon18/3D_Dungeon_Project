@@ -8,23 +8,34 @@ public class PlayerController : MonoBehaviour
     public PlayerStat stat;
     private Rigidbody rigidbody;
 
+    //카메라 회전 정보
+    [Header("Rotate Camera")]
     public Camera camera;
-    private Vector2 prevMouseDelta;
-
     [SerializeField] float lookSentitivity;
     [SerializeField] float maxRotVertical;
     [SerializeField] float minRotVertical;
+    private Vector2 prevMouseDelta;
+    private float cameraCurRot;
 
-    float cameraCurRot;
-
+    //키 입력 처리
     InputHandler inputHandler;
-
+    //애니메이션 작동
     AnimationHandeler animationHandeler;
+
+    [Header("Check Ground")]
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float distanceToGround;
+    [SerializeField] bool isGroud;
+
+    [Header("Jump")]
+    [SerializeField] bool isJumping;
+    [SerializeField] float jumpDuration;
 
     float moveSpeed;
 
     void Start()
     {
+        //Rigidbody, Camera 할당
         rigidbody = GetComponent<Rigidbody>();
         camera = Camera.main;
 
@@ -37,8 +48,31 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    private void Update()
+    {
+
+        //if(previsGround != isGroud)
+        //{
+        //    if(isGroud)
+        //        animationHandeler.ActiveAnimation(AnimationStatus.Land);
+        //    else
+        //        animationHandeler.ActiveAnimation(AnimationStatus.Fall);
+
+        //    previsGround = isGroud;
+        //}
+
+        if (isJumping) return;
+
+        if (!isGroud)
+            animationHandeler.ActiveAnimation(AnimationStatus.Fall);
+        else
+            animationHandeler.ActiveAnimation(AnimationStatus.Land);
+    }
+
     private void FixedUpdate()
     {
+        isGroud = IsGround();
+
         Move();
     }
 
@@ -50,11 +84,10 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         if (stat == null) return;
-
+        //키 입력 값을 적용
         Vector3 dir = transform.forward * inputHandler.movementInput.y + transform.right * inputHandler.movementInput.x;
-
+        //걷기 or 달리기 속도 적용
         moveSpeed = SetSpeed();
-
         dir *= moveSpeed;
         dir.y = rigidbody.velocity.y;
 
@@ -67,15 +100,29 @@ public class PlayerController : MonoBehaviour
     public void OnJump()
     {
         if (stat == null) return;
-        
+
         Jump(stat.jumpPower);
     }
 
     public void Jump(float power)
     {
+        if (!isGroud) return;
+
         rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
 
         animationHandeler.ActiveAnimation(AnimationStatus.Jump);
+
+        isJumping = true;
+
+        StartCoroutine(EndJump());
+    }
+
+    IEnumerator EndJump()
+    {
+        yield return new WaitForSeconds(jumpDuration);
+
+        if(isJumping)
+            isJumping = false;
     }
 
     public float SetSpeed()
@@ -102,6 +149,27 @@ public class PlayerController : MonoBehaviour
 
             prevMouseDelta = inputHandler.mouseDelta;
         }
+    }
+
+    bool IsGround()
+    {
+        Ray ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+
+        if(Physics.Raycast(ray, distanceToGround, groundLayer))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.2f,
+            transform.position + Vector3.up * 0.2f + Vector3.down * distanceToGround);
     }
 
 
