@@ -5,15 +5,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector] public PlayerStat stat;
+    public PlayerStat stat;
     private Rigidbody rigidbody;
 
     public Camera camera;
     private Vector2 prevMouseDelta;
 
     [SerializeField] float lookSentitivity;
+    [SerializeField] float maxRotVertical;
+    [SerializeField] float minRotVertical;
+
+    float cameraCurRot;
 
     InputHandler inputHandler;
+
+    AnimationHandeler animationHandeler;
 
     void Start()
     {
@@ -21,6 +27,8 @@ public class PlayerController : MonoBehaviour
         camera = Camera.main;
 
         inputHandler = GetComponent<InputHandler>();
+
+        animationHandeler = GetComponent<AnimationHandeler>();
 
         inputHandler.OnJump += OnJump; // Jump 이벤트에 메서드 연결
 
@@ -46,6 +54,8 @@ public class PlayerController : MonoBehaviour
         dir.y = rigidbody.velocity.y;
 
         rigidbody.AddForce(dir, ForceMode.Acceleration);
+
+        animationHandeler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
     }
 
     public void OnJump()
@@ -58,14 +68,22 @@ public class PlayerController : MonoBehaviour
     public void Jump(float power)
     {
         rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
+
+        animationHandeler.ActiveAnimation(AnimationStatus.Jump);
     }
 
     void CameraLook()
     {
         if (inputHandler.mouseDelta != prevMouseDelta)
         {
-            transform.eulerAngles += new Vector3(0, inputHandler.mouseDelta.x * lookSentitivity, 0);
-            camera.transform.eulerAngles += new Vector3(inputHandler.mouseDelta.y * lookSentitivity * -1, 0, 0);
+            transform.localEulerAngles += new Vector3(0, inputHandler.mouseDelta.x * lookSentitivity, 0);
+
+            cameraCurRot += inputHandler.mouseDelta.y * lookSentitivity;
+
+            cameraCurRot = Mathf.Clamp(cameraCurRot, minRotVertical, maxRotVertical);
+
+            camera.transform.localEulerAngles = new Vector3(-cameraCurRot, 0, 0);
+
             prevMouseDelta = inputHandler.mouseDelta;
         }
     }
