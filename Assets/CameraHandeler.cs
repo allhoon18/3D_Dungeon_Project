@@ -63,11 +63,11 @@ public class CameraHandeler : MonoBehaviour
         cameraCurRot.x += inputHandler.mouseDelta.x * lookSentitivity;
         cameraCurRot.y += inputHandler.mouseDelta.y * lookSentitivity;
 
-        TPSCameraSetPosition();
-        TPSCameraSetRotation();
+        SetPositionTPSCamera();
+        RotateTPSCamera();
     }
 
-    void TPSCameraSetPosition()
+    void SetPositionTPSCamera()
     {
         //현재 카메라가 바라보는 방향과 반대인 각도를 바라봄
         Vector2 tpsCameraDir = new Vector2(cameraCurRot.x + 180f, cameraCurRot.y + 180f);
@@ -78,21 +78,15 @@ public class CameraHandeler : MonoBehaviour
         transform.localPosition = new Vector3(tpsCameraPosX, tpsCameraPosY + offsetY, tpsCameraPosZ);
     }
 
-    void TPSCameraSetRotation()
+    void RotateTPSCamera()
     {
         Vector3 targetPos = playerTransform.position + Vector3.up;
 
         Vector3 playerDir = targetPos - transform.position;
+
         playerDir.Normalize();
-        float tpsCameraRotY = Mathf.Atan(playerDir.x / playerDir.z) * Mathf.Rad2Deg;
 
-        tpsCameraRotY = transform.localPosition.z > 0 ? tpsCameraRotY : tpsCameraRotY;
-
-        //float a = Mathf.Asin(playerDir.y / 1);
-        //float b = Mathf.Cos(a);
-
-        //float tpsCameraRotY = Mathf.Atan(a/playerDir.y) * Mathf.Rad2Deg;
-
+        float tpsCameraRotY = Mathf.Atan2(playerDir.x, playerDir.z) * Mathf.Rad2Deg;
 
         transform.localEulerAngles = new Vector3(0, tpsCameraRotY, 0);
     }
