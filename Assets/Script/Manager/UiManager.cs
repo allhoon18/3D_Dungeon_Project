@@ -8,49 +8,16 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    //static private UIManager _instance;
-    //static public UIManager Instance
-    //{
-    //    get
-    //    {
-    //        if (_instance == null)
-    //        {
-    //            // 기존의 GameObject에서 UiManager를 찾습니다.
-    //            _instance = FindObjectOfType<UIManager>();
-
-    //            // 만약 찾지 못했다면 새로 생성합니다.
-    //            if (_instance == null)
-    //            {
-    //                GameObject go = new GameObject("UIManager");
-    //                _instance = go.AddComponent<UIManager>();
-    //            }
-    //        }
-    //        return _instance;
-    //    }
-    //}
-
-    //private void Awake()
-    //{
-    //    if (_instance == null)
-    //    {
-    //        _instance = this;
-    //        DontDestroyOnLoad(gameObject);
-    //    }
-    //    else
-    //    {
-    //        if (_instance != this)
-    //        {
-    //            Destroy(gameObject);
-    //        }
-    //    }
-    //}
+    const string UIDefalutPath = "UI/UIDefault";
+    const string UIOverlayPath = "UI/UIOverlay";
 
     [SerializeField] Canvas UICanvas;
 
-    public void Initialize()
+    public void Initialize( PlayerStat stat)
     {
         SetCanvasUI();
         SetInteractable();
+        SetUIDefault(stat);
     }
 
     void SetCanvasUI()
@@ -75,6 +42,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public UIStat uiStat;
+
+    void SetUIDefault(PlayerStat stat)
+    {
+        GameObject uiDefalutprefab = Resources.Load<GameObject>(UIDefalutPath);
+        GameObject uiDefault = Instantiate(uiDefalutprefab, UICanvas.transform);
+        uiStat = uiDefault.GetComponentInChildren<UIStat>();
+
+        uiStat.stat = stat;
+        uiStat.Init();
+    }
+
     GameObject overlayPanel;
 
     public void ShowOverlayUI(GameObject interactableObj)
@@ -83,7 +62,7 @@ public class UIManager : MonoBehaviour
 
         IInteractable interactable = interactableObj.GetComponent<IInteractable>();
 
-        GameObject UIprefab = Resources.Load<GameObject>("UI/Overlay");
+        GameObject UIprefab = Resources.Load<GameObject>(UIOverlayPath);
         UIOverlay uiOverlay = ShowOverlayPrefab(UIprefab);
         uiOverlay.NameText.text = interactable.Name;
         uiOverlay.DescriptionText.text = interactable.Description;

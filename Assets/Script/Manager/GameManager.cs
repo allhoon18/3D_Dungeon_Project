@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
 
     public PlayerController controller;
     public PlayerStat stat;
-    public UIStat uiStat;
     public UIManager uiManager;
     public InteractionHandler interaction;
     public Camera mainCamera;
@@ -51,7 +50,6 @@ public class GameManager : MonoBehaviour
     {
         stat = FindObjectOfType<PlayerStat>().GetComponent<PlayerStat> ();
         controller = FindObjectOfType<PlayerController>().GetComponent<PlayerController>();
-        uiStat = FindObjectOfType<UIStat>().GetComponent<UIStat>(); ;
         interaction = FindObjectOfType<InteractionHandler>().GetComponent<InteractionHandler>();
 
         mainCamera = Camera.main;
@@ -60,14 +58,12 @@ public class GameManager : MonoBehaviour
         controller.camera = mainCamera;
 
         controller.stat = stat;
-        uiStat.stat = stat;
 
         stat.Init();
-        uiStat.Init();
 
         GameObject uiManagerObj = new GameObject("UIManager");
         uiManager = uiManagerObj.AddComponent<UIManager>();
-        uiManager.Initialize();
+        uiManager.Initialize(stat);
     }
 
 }
