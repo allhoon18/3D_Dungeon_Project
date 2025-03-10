@@ -8,14 +8,14 @@ public class PlayerController : MonoBehaviour
     public PlayerStat stat;
     private Rigidbody rigidbody;
 
-    //카메라 회전 정보
-    [Header("Rotate Camera")]
-    public Camera camera;
-    [SerializeField] float lookSentitivity;
-    [SerializeField] float maxRotVertical;
-    [SerializeField] float minRotVertical;
-    private Vector2 prevMouseDelta;
-    private float cameraCurRot;
+    ////카메라 회전 정보
+    //[Header("Rotate Camera")]
+    //public Camera camera;
+    //[SerializeField] float lookSentitivity;
+    //[SerializeField] float maxRotVertical;
+    //[SerializeField] float minRotVertical;
+    //private Vector2 prevMouseDelta;
+    //private float cameraCurRot;
 
     //키 입력 처리
     InputHandler inputHandler;
@@ -64,10 +64,10 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    private void LateUpdate()
-    {
-        CameraLook();
-    }
+    //private void LateUpdate()
+    //{
+    //    CameraLook();
+    //}
 
     void Move()
     {
@@ -123,21 +123,21 @@ public class PlayerController : MonoBehaviour
             return stat.walkSpeed;
     }
 
-    void CameraLook()
-    {
-        if (inputHandler.mouseDelta != prevMouseDelta)
-        {
-            transform.localEulerAngles += new Vector3(0, inputHandler.mouseDelta.x * lookSentitivity, 0);
+    //void CameraLook()
+    //{
+    //    if (inputHandler.mouseDelta != prevMouseDelta)
+    //    {
+    //        transform.localEulerAngles += new Vector3(0, inputHandler.mouseDelta.x * lookSentitivity, 0);
 
-            cameraCurRot += inputHandler.mouseDelta.y * lookSentitivity;
+    //        cameraCurRot += inputHandler.mouseDelta.y * lookSentitivity;
 
-            cameraCurRot = Mathf.Clamp(cameraCurRot, minRotVertical, maxRotVertical);
+    //        cameraCurRot = Mathf.Clamp(cameraCurRot, minRotVertical, maxRotVertical);
 
-            camera.transform.localEulerAngles = new Vector3(-cameraCurRot, 0, 0);
+    //        camera.transform.localEulerAngles = new Vector3(-cameraCurRot, 0, 0);
 
-            prevMouseDelta = inputHandler.mouseDelta;
-        }
-    }
+    //        prevMouseDelta = inputHandler.mouseDelta;
+    //    }
+    //}
 
     bool IsGround()
     {

@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
         mainCamera = Camera.main;
 
         interaction.camera = mainCamera;
-        controller.camera = mainCamera;
+        //controller.camera = mainCamera;
 
         controller.stat = stat;
 
