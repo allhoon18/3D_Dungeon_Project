@@ -7,7 +7,8 @@ public enum StatType
 {
     Health,
     Speed,
-    JumpPower
+    JumpPower,
+    Stamina
 }
 
 public class PlayerStat : MonoBehaviour
@@ -17,34 +18,49 @@ public class PlayerStat : MonoBehaviour
     public float walkSpeed;
     public float runSpeed;
     public float jumpPower;
+    public float stamina;
 
     private float maxHealth;
+    private float maxStamina;
 
-    public Action<float> OnStatChanged;
+    public float staminaRecoverPerSecond;
+    public float staminaUsageForRunning;
+    public float staminaUsageForJump;
+
+    public Action<StatType, float> OnStatChanged;
 
     Dictionary<StatType, Action<float>> ChangeStat;
 
     public void Init()
     {
         maxHealth = health;
+        maxStamina = stamina;
 
         ChangeStat = new Dictionary<StatType, Action<float>>
         {
             { StatType.Health, ChangeHealth },
             { StatType.Speed, ChangeSpeed },
-            { StatType.JumpPower, ChangeJumpPower }
+            { StatType.JumpPower, ChangeJumpPower },
+            { StatType.Stamina, ChangeStamina }
         };
+    }
+
+    private void Update()
+    {
+        if (stamina <= maxStamina)
+            InvokeRepeating("RecoverStamina", 0f, 1f);
+    }
+
+    void RecoverStamina()
+    {
+        AddOrSubtractStat(StatType.Stamina, staminaRecoverPerSecond);
     }
 
     void ChangeHealth(float value)
     {
-        if (value > 0)
-            health = Mathf.Min(health + value, maxHealth);
-        else
-            health = Mathf.Max(0, health + value);
+        health = value > 0 ? Mathf.Min(health + value, maxHealth) : Mathf.Max(0, health + value);
 
-        Debug.Log("Health Changed");
-        OnStatChanged?.Invoke(health / maxHealth);
+        OnStatChanged?.Invoke(StatType.Health, health / maxHealth);
     }
 
     void ChangeSpeed(float value)
@@ -56,6 +72,13 @@ public class PlayerStat : MonoBehaviour
     void ChangeJumpPower(float value)
     {
         jumpPower = Mathf.Max(0, jumpPower + value);
+    }
+
+    void ChangeStamina(float value)
+    {
+        stamina = value > 0 ? Mathf.Min(stamina+value, maxStamina) : Mathf.Max(0, stamina + value);
+
+        OnStatChanged?.Invoke(StatType.Stamina, stamina / maxStamina);
     }
 
     public void AddOrSubtractStat(StatType type, float amount)

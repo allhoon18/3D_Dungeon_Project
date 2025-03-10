@@ -35,7 +35,7 @@ public class CameraHandeler : MonoBehaviour
 
     private void LateUpdate()
     {
-        playerTransform.localEulerAngles = new Vector3(0, cameraCurRot.x, 0);
+        
 
         if (inputHandler.mouseDelta != prevMouseDelta)
         {
@@ -55,32 +55,33 @@ public class CameraHandeler : MonoBehaviour
 
     void FPSCameraLook()
     {
-        transform.localEulerAngles = camStartPos;
+        transform.localPosition = camStartPos;
+
+        playerTransform.localEulerAngles = new Vector3(0, cameraCurRot.x, 0);
 
         cameraCurRot.y = Mathf.Clamp(cameraCurRot.y, minRotVertical, maxRotVertical);
 
-        transform.localEulerAngles = new Vector3(-cameraCurRot.y, cameraCurRot.x, 0);
+        transform.localEulerAngles = new Vector3(-cameraCurRot.y, 0, 0);
     }
 
     void TPSCameraLook()
     {
-        playerTransform.eulerAngles = new Vector3(0, cameraCurRot.x, 0);
-
         SetPositionTPSCamera();
         RotateTPSCamera();
+        playerTransform.eulerAngles = new Vector3(0, cameraCurRot.x, 0);
     }
 
     void SetPositionTPSCamera()
     {
         //현재 카메라가 바라보는 방향과 반대인 각도를 바라봄
-        Vector2 tpsCameraDir = new Vector2(cameraCurRot.x + 180f, cameraCurRot.y+ 180f);
+        Vector2 tpsCameraDir = new Vector2(-cameraCurRot.x + 180, cameraCurRot.y + 180);
         float tpsCameraPosX = Mathf.Cos(tpsCameraDir.x * Mathf.Deg2Rad);
         float tpsCameraPosZ = Mathf.Sin(tpsCameraDir.x * Mathf.Deg2Rad);
         float tpsCameraPosY = Mathf.Sin(tpsCameraDir.y * Mathf.Deg2Rad);
 
         Vector3 tpsCameraPos = new Vector3(tpsCameraPosX, tpsCameraPosY, tpsCameraPosZ).normalized * TPSCameraDistance;
 
-        transform.position = tpsCameraPos + TPSOffset;
+        transform.localPosition = tpsCameraPos + TPSOffset;
     }
 
     void RotateTPSCamera()
@@ -98,6 +99,6 @@ public class CameraHandeler : MonoBehaviour
 
         float tpsCameraRotX = Mathf.Atan(playerDir.y / horizontalDirection.magnitude) * Mathf.Rad2Deg;
 
-        transform.localEulerAngles = new Vector3(-tpsCameraRotX, tpsCameraRotY, 0);
+        transform.eulerAngles = new Vector3(-tpsCameraRotX, tpsCameraRotY, 0);
     }
 }

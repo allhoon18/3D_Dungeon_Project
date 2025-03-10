@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UIStat : MonoBehaviour
 {
     [SerializeField] Image healthBar;
+    [SerializeField] Image staminaBar;
 
     public PlayerStat stat;
 
@@ -14,8 +15,18 @@ public class UIStat : MonoBehaviour
         stat.OnStatChanged += UpdateUI;
     }
 
-    void UpdateUI(float amount)
+    void UpdateUI(StatType type, float amount)
     {
-        healthBar.fillAmount = amount;
+        switch(type)
+        {
+            case StatType.Health:
+                healthBar.fillAmount = amount;
+                break;
+
+            case StatType.Stamina:
+                staminaBar.fillAmount = amount;
+                break;
+        }
+        
     }
 }
