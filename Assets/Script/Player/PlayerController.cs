@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
         if (moveSpeed == stat.runSpeed)
             stat.AddOrSubtractStat(StatType.Stamina, stat.staminaUsageForRunning);
 
+
         animationHandler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
         animationHandler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
 

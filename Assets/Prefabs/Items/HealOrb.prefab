@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4476730894993094241
+--- !u!1 &9155329892492625774
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6037711625536391904}
-  - component: {fileID: 4761745573825928963}
-  - component: {fileID: 6913168326301990947}
-  - component: {fileID: 8303312414204876038}
-  - component: {fileID: 63341424652707799}
-  m_Layer: 6
-  m_Name: JumpPad
+  - component: {fileID: 7968450996934650049}
+  - component: {fileID: 560394649517289175}
+  - component: {fileID: 3470504405741940794}
+  - component: {fileID: 2811618780408337667}
+  - component: {fileID: 2877967673552162941}
+  m_Layer: 7
+  m_Name: HealOrb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6037711625536391904
+--- !u!4 &7968450996934650049
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4476730894993094241}
+  m_GameObject: {fileID: 9155329892492625774}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.77, y: 0.05, z: 2.832}
-  m_LocalScale: {x: 2, y: 0.1, z: 2}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -3.51, y: 0.77, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4761745573825928963
+--- !u!33 &560394649517289175
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4476730894993094241}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6913168326301990947
+  m_GameObject: {fileID: 9155329892492625774}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &3470504405741940794
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4476730894993094241}
+  m_GameObject: {fileID: 9155329892492625774}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e9eded22fad3f7a40ae62a30d44f054c, type: 2}
+  - {fileID: 2100000, guid: 821875ca7b8465f4daaeb028a57a70a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,13 +85,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8303312414204876038
-BoxCollider:
+--- !u!135 &2811618780408337667
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4476730894993094241}
+  m_GameObject: {fileID: 9155329892492625774}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -100,25 +100,22 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &63341424652707799
+--- !u!114 &2877967673552162941
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4476730894993094241}
+  m_GameObject: {fileID: 9155329892492625774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0604301a4e95924d8d334d6040a02b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d715ce31868b71478626937879b27c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  power: 80
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  data: {fileID: 11400000, guid: d6a39b198d51c0f45bfad00519607843, type: 2}
