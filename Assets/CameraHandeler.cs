@@ -6,52 +6,56 @@ public class CameraHandeler : MonoBehaviour
 {
     public Transform playerTransform;
     public InputHandler inputHandler;
+    public Camera camera;
+
+    public bool isFPSMode;
 
     //카메라 회전 정보
-    [Header("Rotate Camera")]
-    public Camera camera;
+    [Header("FPS Info")]
     [SerializeField] float lookSentitivity;
     [SerializeField] float maxRotVertical;
     [SerializeField] float minRotVertical;
+
+    [Header("TPS Info")]
     [SerializeField] float TPSCameraDistance;
+
     private Vector2 prevMouseDelta;
     
     private Vector2 cameraCurRot;
 
-    private Vector2 tpsCameraCurRot;
+    public Vector3 camStartPos;
 
-    bool isFPSMode;
-
-    public const float offsetY = 1.7f;
 
     private void Start()
     {
         playerTransform = transform.parent;
         inputHandler = GetComponentInParent<InputHandler>();
+        camStartPos = transform.position;
     }
 
     private void LateUpdate()
     {
         if (inputHandler.mouseDelta != prevMouseDelta)
         {
-            //FPSCameraLook();
-            TPSCameraLook();
+            cameraCurRot.x += inputHandler.mouseDelta.x * lookSentitivity;
+            cameraCurRot.y += inputHandler.mouseDelta.y * lookSentitivity;
+
+            if (isFPSMode)
+                FPSCameraLook();
+            else
+                TPSCameraLook();
+
             prevMouseDelta = inputHandler.mouseDelta;
         }
 
-        //if (isFPSMode)
-        //    FPSCameraLook();
-        //else
-        //    TPSCameraLook();
+        
     }
 
     void FPSCameraLook()
     {
-        cameraCurRot.x = inputHandler.mouseDelta.x * lookSentitivity;
+        transform.localEulerAngles = camStartPos;
 
-        playerTransform.localEulerAngles += new Vector3(0, cameraCurRot.x, 0);
-
-        cameraCurRot.y += inputHandler.mouseDelta.y * lookSentitivity;
+        playerTransform.localEulerAngles = new Vector3(0, cameraCurRot.x, 0);
 
         cameraCurRot.y = Mathf.Clamp(cameraCurRot.y, minRotVertical, maxRotVertical);
 
@@ -60,8 +64,7 @@ public class CameraHandeler : MonoBehaviour
 
     void TPSCameraLook()
     {
-        cameraCurRot.x += inputHandler.mouseDelta.x * lookSentitivity;
-        cameraCurRot.y += inputHandler.mouseDelta.y * lookSentitivity;
+        //playerTransform.localEulerAngles = new Vector3(0, cameraCurRot.x, 0);
 
         SetPositionTPSCamera();
         RotateTPSCamera();
@@ -75,19 +78,25 @@ public class CameraHandeler : MonoBehaviour
         float tpsCameraPosZ = Mathf.Sin(tpsCameraDir.x * Mathf.Deg2Rad) * TPSCameraDistance;
         float tpsCameraPosY = Mathf.Sin(tpsCameraDir.y * Mathf.Deg2Rad) * TPSCameraDistance;
 
-        transform.localPosition = new Vector3(tpsCameraPosX, tpsCameraPosY + offsetY, tpsCameraPosZ);
+        transform.localPosition = new Vector3(tpsCameraPosX, tpsCameraPosY, tpsCameraPosZ) + camStartPos;
     }
 
     void RotateTPSCamera()
     {
-        Vector3 targetPos = playerTransform.position + Vector3.up;
+        Vector3 targetPos = playerTransform.position + camStartPos;
 
         Vector3 playerDir = targetPos - transform.position;
 
         playerDir.Normalize();
 
+        //카메라의 y축 회전
         float tpsCameraRotY = Mathf.Atan2(playerDir.x, playerDir.z) * Mathf.Rad2Deg;
 
-        transform.localEulerAngles = new Vector3(0, tpsCameraRotY, 0);
+        //카메라의 x축 회전
+        Vector2 horizontalDirection = new Vector2(playerDir.x, playerDir.z);
+
+        float tpsCameraRotX = Mathf.Atan(playerDir.y / horizontalDirection.magnitude) * Mathf.Rad2Deg;
+
+        transform.localEulerAngles = new Vector3(-tpsCameraRotX, tpsCameraRotY, 0);
     }
 }
