@@ -385,12 +385,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  walkSpeed: 7
-  runSpeed: 12
+  walkSpeed: 30
+  runSpeed: 50
   jumpPower: 20
   stamina: 100
   staminaRecoverPerSecond: 0.1
-  staminaUsageForRunning: -3
+  staminaUsageForRunning: -2
   staminaUsageForJump: -25
 --- !u!114 &440899061
 MonoBehaviour:

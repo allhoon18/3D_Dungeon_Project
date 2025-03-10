@@ -34,6 +34,11 @@ public class Item : MonoBehaviour, IInteractable
         }
     }
 
+    public void ActiveItemEffect()
+    {
+        
+    }
+
     public void Interact()
     {
         OnItemInteracted?.Invoke(this.gameObject);
