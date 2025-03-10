@@ -25,13 +25,18 @@ public class Item : MonoBehaviour, IInteractable
         PlayerStat playerStat;
         if(other.gameObject.TryGetComponent(out playerStat))
         {
-            if (data.duration > 0)
+            if (data.duration < 0)
                 playerStat.AddOrSubtractStat(data.type, data.value);
             else
                 playerStat.ChangeStatDuringDuration(data.type, data.value, data.duration);
 
             Destroy(gameObject);
         }
+    }
+
+    public void ActiveItemEffect()
+    {
+        
     }
 
     public void Interact()

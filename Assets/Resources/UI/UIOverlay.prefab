@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 4662313196364966165}
   - component: {fileID: 5121638291589968342}
   m_Layer: 5
-  m_Name: Overlay
+  m_Name: UIOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

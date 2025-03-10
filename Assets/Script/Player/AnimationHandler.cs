@@ -24,7 +24,7 @@ public class AnimationHandler : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
 
         animationHandlersWithoutInput = new Dictionary<AnimationStatus, Action>()
         {

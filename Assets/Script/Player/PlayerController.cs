@@ -8,15 +8,6 @@ public class PlayerController : MonoBehaviour
     public PlayerStat stat;
     private Rigidbody rigidbody;
 
-    //카메라 회전 정보
-    [Header("Rotate Camera")]
-    public Camera camera;
-    [SerializeField] float lookSentitivity;
-    [SerializeField] float maxRotVertical;
-    [SerializeField] float minRotVertical;
-    private Vector2 prevMouseDelta;
-    private float cameraCurRot;
-
     //키 입력 처리
     InputHandler inputHandler;
     //애니메이션 작동
@@ -64,14 +55,10 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
-    private void LateUpdate()
-    {
-        CameraLook();
-    }
-
     void Move()
     {
         if (stat == null) return;
+
         //키 입력 값을 적용
         Vector3 dir = transform.forward * inputHandler.movementInput.y + transform.right * inputHandler.movementInput.x;
         //걷기 or 달리기 속도 적용
@@ -79,10 +66,17 @@ public class PlayerController : MonoBehaviour
         dir *= moveSpeed;
         dir.y = rigidbody.velocity.y;
 
-        rigidbody.AddForce(dir, ForceMode.Acceleration);
+        rigidbody.AddForce(dir);
+
+        if (moveSpeed == stat.runSpeed)
+            stat.AddOrSubtractStat(StatType.Stamina, stat.staminaUsageForRunning);
+
 
         animationHandler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
         animationHandler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
+
+        if (inputHandler.movementInput == Vector2.zero && !isJumping)
+            rigidbody.velocity = Vector3.zero;
     }
 
     public void OnJump()
@@ -94,13 +88,15 @@ public class PlayerController : MonoBehaviour
 
     public void Jump(float power)
     {
-        if (!isGroud) return;
+        if (!isGroud && stat.stamina > 0) return;
 
         rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
 
         animationHandler.ActiveAnimation(AnimationStatus.Jump);
 
         isJumping = true;
+
+        stat.AddOrSubtractStat(StatType.Stamina, stat.staminaUsageForJump);
 
         StartCoroutine(EndJump());
     }
@@ -115,28 +111,12 @@ public class PlayerController : MonoBehaviour
 
     public float SetSpeed()
     {
-        if (inputHandler.isRun)
+        if (inputHandler.isRun && stat.stamina > 0)
         {
             return stat.runSpeed;
         }  
         else
             return stat.walkSpeed;
-    }
-
-    void CameraLook()
-    {
-        if (inputHandler.mouseDelta != prevMouseDelta)
-        {
-            transform.localEulerAngles += new Vector3(0, inputHandler.mouseDelta.x * lookSentitivity, 0);
-
-            cameraCurRot += inputHandler.mouseDelta.y * lookSentitivity;
-
-            cameraCurRot = Mathf.Clamp(cameraCurRot, minRotVertical, maxRotVertical);
-
-            camera.transform.localEulerAngles = new Vector3(-cameraCurRot, 0, 0);
-
-            prevMouseDelta = inputHandler.mouseDelta;
-        }
     }
 
     bool IsGround()
