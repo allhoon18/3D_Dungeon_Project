@@ -26,21 +26,22 @@ public class Item : MonoBehaviour, IInteractable
     {
         if (targetPlayer == null) return;
 
+        //아이템 정보의 지속시간 값 유무에 따라 다르게 적용
         if (data.duration == 0)
             targetPlayer.AddOrSubtractStat(data.type, data.value);
         else
             targetPlayer.ChangeStatDuringDuration(data.type, data.value, data.duration);
 
-        Debug.Log("Item Use");
         EndInteraction();
         Destroy(gameObject);
     }
 
+    //Interaction에 의해 감지되었을 때 호출->오버레이 UI를 활성화
     public void Interact()
     {
         OnItemInteracted?.Invoke(this.gameObject);
     }
-
+    //오버레이 UI를 제거
     public void EndInteraction()
     {
         OnItemInteractionEnded?.Invoke();

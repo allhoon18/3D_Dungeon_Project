@@ -36,6 +36,7 @@ public class PlayerStat : MonoBehaviour
         maxHealth = health;
         maxStamina = stamina;
 
+        //스탯 타입과 그에 따른 변경 함수를 저장
         ChangeStat = new Dictionary<StatType, Action<float>>
         {
             { StatType.Health, ChangeHealth },
@@ -83,6 +84,8 @@ public class PlayerStat : MonoBehaviour
         OnStatChanged?.Invoke(StatType.Stamina, stamina / maxStamina);
     }
 
+    //외부에서 스탯 변경시에는 이 함수를 호출
+    //스탯 타입과 값을 입력해 해당 스탯의 값을 수정
     public void AddOrSubtractStat(StatType type, float amount)
     {
         Action<float> statChange;
@@ -92,13 +95,13 @@ public class PlayerStat : MonoBehaviour
             statChange(amount);
         }
     }
-
+    //일정 기간동안 적용되는 스탯 변경을 적용
     public void ChangeStatDuringDuration(StatType type, float amount, float duration)
     {
         AddOrSubtractStat(type, amount);
         StartCoroutine(ResetStat(type, amount, duration));
     }
-
+    //일정 시간이 지나면 스탯을 복구
     IEnumerator ResetStat(StatType type, float amount, float duration)
     {
         yield return new WaitForSeconds(duration);
