@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpDuration;
 
     bool isMoveOnPlatform;
+    Transform platformTransform;
+    Vector3 prevPlatformPosition;
 
     float moveSpeed;
 
@@ -61,8 +64,15 @@ public class PlayerController : MonoBehaviour
     {
         if (stat == null) return;
 
-        //키 입력 값을 적용
         Vector3 dir = transform.forward * inputHandler.movementInput.y + transform.right * inputHandler.movementInput.x;
+
+        if (isMoveOnPlatform && prevPlatformPosition != null)
+        {
+            // 플랫폼의 위치를 기준으로 움직임 처리
+            transform.position += platformTransform.position - prevPlatformPosition;
+            prevPlatformPosition = platformTransform.position;
+        }
+
         //걷기 or 달리기 속도 적용
         moveSpeed = SetSpeed();
         dir *= moveSpeed;
@@ -133,7 +143,7 @@ public class PlayerController : MonoBehaviour
             if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
                 isMoveOnPlatform = true;
-                transform.position = hit.collider.transform.position;
+                platformTransform = hit.transform;
             }
             else
             {
