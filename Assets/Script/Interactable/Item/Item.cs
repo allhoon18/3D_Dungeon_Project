@@ -20,23 +20,20 @@ public class Item : MonoBehaviour, IInteractable
     public event Action<GameObject> OnItemInteracted;
     public event Action OnItemInteractionEnded;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerStat playerStat;
-        if(other.gameObject.TryGetComponent(out playerStat))
-        {
-            if (data.duration < 0)
-                playerStat.AddOrSubtractStat(data.type, data.value);
-            else
-                playerStat.ChangeStatDuringDuration(data.type, data.value, data.duration);
-
-            Destroy(gameObject);
-        }
-    }
+    public PlayerStat targetPlayer;
 
     public void ActiveItemEffect()
     {
-        
+        if (targetPlayer == null) return;
+
+        if (data.duration == 0)
+            targetPlayer.AddOrSubtractStat(data.type, data.value);
+        else
+            targetPlayer.ChangeStatDuringDuration(data.type, data.value, data.duration);
+
+        Debug.Log("Item Use");
+        EndInteraction();
+        Destroy(gameObject);
     }
 
     public void Interact()

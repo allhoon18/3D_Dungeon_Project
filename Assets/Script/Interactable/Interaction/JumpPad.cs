@@ -26,9 +26,7 @@ public class JumpPad : MonoBehaviour, IInteractable
 
         if(collision.gameObject.TryGetComponent(out playerController))
         {
-            Debug.Log("JumpPad Active");
             playerController.Jump(power);
-            GameManager.Instance.stat.AddOrSubtractStat(StatType.Health, -10f);
         }
     }
 

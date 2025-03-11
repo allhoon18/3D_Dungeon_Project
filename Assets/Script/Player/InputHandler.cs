@@ -11,6 +11,8 @@ public class InputHandler : MonoBehaviour
     public Vector2 movementInput { get; private set; }
     public Vector2 mouseDelta { get; private set; }
     public bool isRun { get; private set; }
+    public bool isUse { get; private set; }
+    public bool cameraChange { get; private set; }
 
     public event Action OnJump;
 
@@ -37,5 +39,12 @@ public class InputHandler : MonoBehaviour
         InputAction runAction = playerActionMap.FindAction("Run");
         runAction.performed += context => isRun = true;
         runAction.canceled += context => isRun = false;
+
+        InputAction useAction = playerActionMap.FindAction("Use");
+        useAction.performed += context => isUse = true;
+        useAction.canceled += context => isUse = false;
+
+        InputAction cameraAction = playerActionMap.FindAction("CameraChange");
+        cameraAction.started += context => cameraChange = !cameraChange;
     }
 }
