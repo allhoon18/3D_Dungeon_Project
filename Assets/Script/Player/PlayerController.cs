@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool isJumping;
     [SerializeField] float jumpDuration;
 
+    bool isMoveOnPlatform;
+
     float moveSpeed;
 
     void Start()
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour
 
         if (inputHandler.movementInput == Vector2.zero && !isJumping)
             rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+
     }
 
     public void OnJump()
@@ -123,8 +126,20 @@ public class PlayerController : MonoBehaviour
     {
         Ray ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
 
-        if(Physics.Raycast(ray, distanceToGround, groundLayer))
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, distanceToGround, groundLayer))
         {
+            if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            {
+                isMoveOnPlatform = true;
+                transform.position = hit.collider.transform.position;
+            }
+            else
+            {
+                isMoveOnPlatform = false;
+            }
+
             return true;
         }
         else
