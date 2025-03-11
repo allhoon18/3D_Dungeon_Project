@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour, IInteractable
+public class StatPad : MonoBehaviour, IInteractable
 {
-    [SerializeField] float damage;
+    [SerializeField] StatType type;
+    [SerializeField] float value;
     [SerializeField] InteractableData data;
+    [SerializeField] bool resetOnEnd;
 
     public InteractableData interactableData
     {
@@ -20,14 +22,24 @@ public class Obstacle : MonoBehaviour, IInteractable
     public event Action<GameObject> OnItemInteracted;
     public event Action OnItemInteractionEnded;
 
+    PlayerStat playerStat;
+
     private void OnCollisionEnter(Collision collision)
     {
-        PlayerStat playerStat;
+        
 
         if (collision.gameObject.TryGetComponent(out playerStat))
         {
-            playerStat.AddOrSubtractStat(StatType.Health, -10f);
+            playerStat.AddOrSubtractStat(type, value);
         }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if(playerStat != null && resetOnEnd)
+            playerStat.AddOrSubtractStat(type, -value);
+
+        playerStat = null;
     }
 
     public void Interact()

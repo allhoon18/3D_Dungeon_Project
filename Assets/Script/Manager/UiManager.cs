@@ -58,8 +58,6 @@ public class UIManager : MonoBehaviour
 
     public void ShowOverlayUI(GameObject interactableObj)
     {
-        Debug.Log("It is "+interactableObj.name);
-
         IInteractable interactable = interactableObj.GetComponent<IInteractable>();
 
         GameObject UIprefab = Resources.Load<GameObject>(UIOverlayPath);
@@ -69,9 +67,9 @@ public class UIManager : MonoBehaviour
 
         Item item;
 
-        if(interactableObj.TryGetComponent(out item))
+        if(interactableObj.TryGetComponent<Item>(out item))
         {
-            Debug.Log("It is item");
+            uiOverlay.UseButtonUI.gameObject.SetActive(item != null);
         }
     }
 

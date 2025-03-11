@@ -66,12 +66,14 @@ public class PlayerStat : MonoBehaviour
     void ChangeSpeed(float value)
     {
         walkSpeed = Mathf.Max(0, walkSpeed + value);
-        runSpeed = Mathf.Max(0, walkSpeed + value);
+        runSpeed = Mathf.Max(0, runSpeed + value);
+        OnStatChanged?.Invoke(StatType.Speed, 0);
     }
 
     void ChangeJumpPower(float value)
     {
         jumpPower = Mathf.Max(0, jumpPower + value);
+        OnStatChanged?.Invoke(StatType.JumpPower, 0);
     }
 
     void ChangeStamina(float value)

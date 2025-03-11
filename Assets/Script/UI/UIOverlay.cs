@@ -7,4 +7,6 @@ public class UIOverlay : MonoBehaviour
 {
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI DescriptionText;
+    public GameObject UseButtonUI;
+
 }

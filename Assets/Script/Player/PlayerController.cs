@@ -76,19 +76,19 @@ public class PlayerController : MonoBehaviour
         animationHandler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
 
         if (inputHandler.movementInput == Vector2.zero && !isJumping)
-            rigidbody.velocity = Vector3.zero;
+            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
     }
 
     public void OnJump()
     {
-        if (stat == null) return;
+        if (stat == null && stat.stamina < stat.staminaUsageForJump) return;
 
         Jump(stat.jumpPower);
     }
 
     public void Jump(float power)
     {
-        if (!isGroud && stat.stamina > 0) return;
+        if (!isGroud) return;
 
         rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
 
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
     public float SetSpeed()
     {
-        if (inputHandler.isRun && stat.stamina > 0)
+        if (inputHandler.isRun && stat.stamina > stat.staminaUsageForRunning)
         {
             return stat.runSpeed;
         }  

@@ -8,13 +8,31 @@ public class InteractionHandler : MonoBehaviour
     [SerializeField] float interactRange;
     [SerializeField] Transform interactPoint;
 
-    GameObject _curInteraction;
+    GameObject curInteraction;
 
     public Camera camera;
+
+    InputHandler input;
+
+    private void Start()
+    {
+        input = GetComponent<InputHandler>();
+    }
 
     private void Update()
     {
         CheckObject();
+
+        if (input.isUse && curInteraction != null)
+        {
+            Item curItem;
+
+            if(curInteraction.TryGetComponent<Item>( out curItem ))
+            {
+                curItem.targetPlayer = GetComponent<PlayerStat>();
+                curItem.ActiveItemEffect();
+            }
+        }
     }
 
     void CheckObject()
@@ -26,18 +44,18 @@ public class InteractionHandler : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactRange, targetLayer))
         {
-            if (hit.collider.gameObject != _curInteraction)
+            if (hit.collider.gameObject != curInteraction)
             {
-                _curInteraction = hit.collider.gameObject;
+                curInteraction = hit.collider.gameObject;
 
                 ItemInteract(hit.collider.gameObject);
             }
         }
         else
         {
-            if(_curInteraction != null)
-                EndItemInteact(_curInteraction);
-            _curInteraction = null;
+            if(curInteraction != null)
+                EndItemInteact(curInteraction);
+            curInteraction = null;
         }
     }
 
