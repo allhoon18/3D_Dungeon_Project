@@ -42,7 +42,7 @@ public class AnimationHandler : MonoBehaviour
 
     void ActiveWalkAnimation(float speed)
     {
-        animator.SetBool("Move", speed > 0.5f);
+        animator.SetBool("Move", speed > 0.1f);
     }
 
     void ActiveJumpAnimation()

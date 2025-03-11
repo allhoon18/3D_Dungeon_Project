@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class CameraHandeler : MonoBehaviour
 {
-    Transform playerTransform;
-    InputHandler inputHandler;
+    [SerializeField] Transform playerTransform;
+    [SerializeField] InputHandler inputHandler;
 
     public bool isFPSMode;
+    [SerializeField] Vector3 cameraOffset;
 
     //카메라 회전 정보
     [Header("FPS Info")]
@@ -17,7 +18,7 @@ public class CameraHandeler : MonoBehaviour
 
     [Header("TPS Info")]
     [SerializeField] float TPSCameraDistance;
-    [SerializeField] Vector3 TPSOffset;
+    
 
     private Vector2 prevMouseDelta;
     
@@ -28,9 +29,13 @@ public class CameraHandeler : MonoBehaviour
 
     private void Start()
     {
-        playerTransform = transform.parent;
-        inputHandler = GetComponentInParent<InputHandler>();
-        camStartPos = transform.localPosition;
+        camStartPos = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        if (isFPSMode)
+            transform.position = playerTransform.position + cameraOffset;
     }
 
     private void LateUpdate()
@@ -55,13 +60,11 @@ public class CameraHandeler : MonoBehaviour
 
     void FPSCameraLook()
     {
-        transform.localPosition = camStartPos;
-
         playerTransform.localEulerAngles = new Vector3(0, cameraCurRot.x, 0);
 
         cameraCurRot.y = Mathf.Clamp(cameraCurRot.y, minRotVertical, maxRotVertical);
 
-        transform.localEulerAngles = new Vector3(-cameraCurRot.y, 0, 0);
+        transform.localEulerAngles = new Vector3(-cameraCurRot.y, cameraCurRot.x, 0);
     }
 
     void TPSCameraLook()
@@ -81,12 +84,12 @@ public class CameraHandeler : MonoBehaviour
 
         Vector3 tpsCameraPos = new Vector3(tpsCameraPosX, tpsCameraPosY, tpsCameraPosZ).normalized * TPSCameraDistance;
 
-        transform.localPosition = tpsCameraPos + TPSOffset;
+        transform.position = playerTransform.position + tpsCameraPos + cameraOffset;
     }
 
     void RotateTPSCamera()
     {
-        Vector3 targetPos = playerTransform.position + TPSOffset;
+        Vector3 targetPos = playerTransform.position + cameraOffset;
         Vector3 playerDir = targetPos - transform.position;
 
         playerDir.Normalize();

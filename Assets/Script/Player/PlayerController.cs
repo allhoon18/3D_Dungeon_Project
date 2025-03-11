@@ -75,10 +75,7 @@ public class PlayerController : MonoBehaviour
 
         //걷기 or 달리기 속도 적용
         moveSpeed = SetSpeed();
-        dir *= moveSpeed;
         dir.y = rigidbody.velocity.y;
-
-        rigidbody.AddForce(dir);
 
         if (moveSpeed == stat.runSpeed)
             stat.AddOrSubtractStat(StatType.Stamina, stat.staminaUsageForRunning);
@@ -87,15 +84,14 @@ public class PlayerController : MonoBehaviour
         animationHandler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
         animationHandler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
 
-        if (inputHandler.movementInput == Vector2.zero && !isJumping)
-            rigidbody.velocity = new Vector3(0, rigidbody.velocity.y, 0);
+        rigidbody.AddForce(dir * moveSpeed, ForceMode.Force);
 
     }
 
     public void OnJump()
     {
         if (stat == null && stat.stamina < stat.staminaUsageForJump) return;
-
+        Debug.Log("Jump");
         Jump(stat.jumpPower);
     }
 
@@ -103,7 +99,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!isGroud) return;
 
-        rigidbody.AddForce(Vector3.up * power, ForceMode.Impulse);
+        rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
+
+        rigidbody.AddForce(transform.up * power, ForceMode.Impulse);
 
         animationHandler.ActiveAnimation(AnimationStatus.Jump);
 
