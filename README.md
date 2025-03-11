@@ -5,8 +5,7 @@
 - 3D 환경에서 플랫포머 게임에 필요한 요소를 구현
 - 이동 조작 및 점프대, 함정 등의 요소를 포함함
     
-    [](https://github.com/user-attachments/assets/2b7b0e38-4f42-40fc-8d04-93001f4a9932)
-    
+![스크린샷 2025-03-10 210028](https://github.com/user-attachments/assets/dfd68dcf-f94a-4c00-82b9-65e05fd9973c)
 
 ## 2. 구현 사항
 
