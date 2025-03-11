@@ -35,7 +35,7 @@ public class CameraHandeler : MonoBehaviour
 
     private void LateUpdate()
     {
-        
+        isFPSMode = inputHandler.cameraChange;
 
         if (inputHandler.mouseDelta != prevMouseDelta)
         {
