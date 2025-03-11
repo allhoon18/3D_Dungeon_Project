@@ -25,7 +25,7 @@ public class AnimationHandler : MonoBehaviour
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
-
+        //애니메이션 실행시 입력 값의 유무로 구분해서 저장
         animationHandlersWithoutInput = new Dictionary<AnimationStatus, Action>()
         {
             { AnimationStatus.Jump, ActiveJumpAnimation},

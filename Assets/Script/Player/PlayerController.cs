@@ -31,7 +31,6 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        //Rigidbody
         rigidbody = GetComponent<Rigidbody>();
 
         inputHandler = GetComponent<InputHandler>();
@@ -45,6 +44,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        //점프 상태일 때는 낙하 애니메이션을 재생하지 않음
         if (isJumping) return;
 
         if (!isGroud)
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //지면에 있는지 여부를 확인
         isGroud = IsGround();
 
         Move();
@@ -77,6 +78,7 @@ public class PlayerController : MonoBehaviour
         moveSpeed = SetSpeed();
         dir.y = rigidbody.velocity.y;
 
+        //달리고 있을 때 스태미나를 사용함
         if (moveSpeed == stat.runSpeed)
             stat.AddOrSubtractStat(StatType.Stamina, stat.staminaUsageForRunning);
 
@@ -84,6 +86,7 @@ public class PlayerController : MonoBehaviour
         animationHandler.ActiveAnimation(AnimationStatus.Walk, dir.magnitude);
         animationHandler.ActiveAnimation(AnimationStatus.Run, moveSpeed);
 
+        //움직임을 적용
         rigidbody.AddForce(dir * moveSpeed, ForceMode.Force);
 
     }
@@ -91,12 +94,14 @@ public class PlayerController : MonoBehaviour
     public void OnJump()
     {
         if (stat == null && stat.stamina < stat.staminaUsageForJump) return;
-        Debug.Log("Jump");
+        //키 입력을 통해 점프시 스탯의 jumpPower를 사용함
         Jump(stat.jumpPower);
     }
 
+    //외부에서 점프를 실행할 때는 힘을 입력할 수 있게함(ex: 점프대)
     public void Jump(float power)
     {
+        //지면에 있을 때만 점프를 실행
         if (!isGroud) return;
 
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
@@ -108,7 +113,7 @@ public class PlayerController : MonoBehaviour
         isJumping = true;
 
         stat.AddOrSubtractStat(StatType.Stamina, stat.staminaUsageForJump);
-
+        //지면에 닿았는지 여부와 관계없이 일정 시간이 지나면 점프 상태를 해제
         StartCoroutine(EndJump());
     }
 
@@ -120,6 +125,7 @@ public class PlayerController : MonoBehaviour
             isJumping = false;
     }
 
+    //입력에 따라 걷기 또는 달리기 속도를 적용
     public float SetSpeed()
     {
         if (inputHandler.isRun && stat.stamina > stat.staminaUsageForRunning)

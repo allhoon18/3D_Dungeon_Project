@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
         SetUIDefault(stat);
     }
 
+    //캔버스를 생성하고 초기화함
     void SetCanvasUI()
     {
         GameObject canvasObj = new GameObject("UICanvas");
@@ -44,6 +45,7 @@ public class UIManager : MonoBehaviour
 
     public UIStat uiStat;
 
+    //체력바, 조준점과 같은 초기 UI를 세팅
     void SetUIDefault(PlayerStat stat)
     {
         GameObject uiDefalutprefab = Resources.Load<GameObject>(UIDefalutPath);
@@ -55,7 +57,7 @@ public class UIManager : MonoBehaviour
     }
 
     GameObject overlayPanel;
-
+    //아이템 정보를 전시하는 overlayPanel을 불러옴
     public void ShowOverlayUI(GameObject interactableObj)
     {
         IInteractable interactable = interactableObj.GetComponent<IInteractable>();

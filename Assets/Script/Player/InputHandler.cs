@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
+    //InputAction을 통한 키 입력을 처리
     private PlayerInput input;
     private InputActionMap playerActionMap;
     public Vector2 movementInput { get; private set; }
